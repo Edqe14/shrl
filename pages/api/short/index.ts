@@ -13,7 +13,8 @@ export default connector()
 
     const all = await prisma.shorted.findMany({
       where: {
-        apiKeyId: key.instance.id
+        apiKeyId: key.instance.id,
+        deleted: false
       },
       select: {
         id: true,
@@ -39,12 +40,10 @@ export default connector()
       data: {
         name: name ?? nanoid(8),
         url,
-        accessToken: nanoid(24),
         apiKeyId: key.instance.id,
       },
       select: {
         id: true,
-        accessToken: true,
         name: true,
         url: true,
         createdAt: true,

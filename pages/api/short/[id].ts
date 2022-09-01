@@ -23,10 +23,7 @@ export default connector()
         where: {
           id: req.query.id as string,
           deleted: false,
-          OR: {
-            apiKeyId: key.instance.id,
-            accessToken: (key.instance as Shorted).accessToken
-          }
+          apiKeyId: key.instance.id,
         }
       });
 
@@ -47,10 +44,7 @@ export default connector()
         where: {
           id: req.query.id as string,
           deleted: false,
-          OR: {
-            apiKeyId: key.instance.id,
-            accessToken: (key.instance as Shorted).accessToken
-          }
+          apiKeyId: key.instance.id,
         }
       }))) throw new Error('Not found');
 
@@ -73,8 +67,8 @@ export default connector()
 
       return responseUtil(res, 200, { data: all });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      return responseUtil(res, 404, { message: e.message });
+    } catch {
+      return responseUtil(res, 404, { message: 'Not Found' });
     }
   })
   .delete(async (req, res) => {
@@ -85,22 +79,22 @@ export default connector()
         where: {
           id: req.query.id as string,
           deleted: false,
-          OR: {
-            apiKeyId: key.instance.id,
-            accessToken: (key.instance as Shorted).accessToken
-          }
+          apiKeyId: key.instance.id,
         }
       }))) throw new Error('Not found');
 
-      const all = await prisma.shorted.delete({
+      await prisma.shorted.update({
         where: {
           id: req.query.id as string,
+        },
+        data: {
+          deleted: true
         }
       });
 
-      return responseUtil(res, 200, { data: all });
+      return responseUtil(res, 200, { message: 'Deleted' });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      return responseUtil(res, 404, { message: e.message });
+    } catch {
+      return responseUtil(res, 404, { message: 'Not Found' });
     }
   });

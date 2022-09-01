@@ -11,13 +11,12 @@ datasource db {
 }
 
 model Shorted {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  url         String
-  name     String   @unique
-  accessToken String   @unique
-  apiKeyId    String   @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  name      String   @unique
+  apiKeyId  String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   deleted   Boolean  @default(false)
 
   apiKey ApiKeys @relation(fields: [apiKeyId], references: [id])
