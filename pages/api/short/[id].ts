@@ -1,4 +1,3 @@
-import { Shorted } from '@prisma/client';
 import connector from '@/lib/connector';
 import { getKey, responseUtil, runValidator } from '@/lib/helper';
 import prisma from '@/lib/database';
