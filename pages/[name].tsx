@@ -15,7 +15,7 @@ export default function Name({ url }: Props) {
 
   return (
     <main className="w-screen h-screen flex justify-center items-center">
-      <h1>Redirecting to <span className="font-bold underline underline-offset-8 decoration-blue-500 decoration-2">{url}</span></h1>
+      <h1>Redirecting to <span className="font-bold underline underline-offset-8 decoration-primary decoration-2">{url}</span></h1>
     </main>
   );
 }
