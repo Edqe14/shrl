@@ -1,6 +1,5 @@
-import { nanoid } from 'nanoid';
 import connector from '@/lib/connector';
-import { getKey, responseUtil, runValidator } from '@/lib/helper';
+import { generateRandomName, getKey, responseUtil, runValidator } from '@/lib/helper';
 import prisma from '@/lib/database';
 import { optionalShorterValidator } from '@/lib/validators/shorter';
 import auth from '@/lib/connector/middleware/auth';
@@ -52,7 +51,7 @@ export default connector()
       const all = await prisma.shorted.update({
         data: {
           url,
-          name: name ?? nanoid(8)
+          name: name || generateRandomName()
         },
         where: {
           id: req.query.id as string,

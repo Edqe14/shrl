@@ -2,7 +2,10 @@
 /* eslint-disable import/prefer-default-export */
 
 import { ApiKeys, Shorted } from '@prisma/client';
+import camelcase from 'camelcase';
+import { nanoid } from 'nanoid';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { adjectives, animals, colors, languages, uniqueNamesGenerator } from 'unique-names-generator';
 import { AnySchema } from 'yup';
 import prisma from './database';
 
@@ -20,11 +23,6 @@ export class AccessKeyHelper<T extends ApiKeys | Shorted = ApiKeys> {
         id: this.instance.id,
       }
     };
-
-    if ((this.instance as Shorted).accessToken) {
-      return prisma.shorted.update(data);
-    }
-
     return prisma.apiKeys.update(data);
   }
 }
@@ -34,7 +32,8 @@ export const responseUtil = (res: NextApiResponse, status: number, data: Record<
 export const getKey = async (req: NextApiRequest) => {
   if (!req.headers.authorization) return null;
 
-  const [, key] = req.headers.authorization.split(' ');
+  const [type , key] = req.headers.authorization.split(' ');
+  if (!type || !key || type.toLocaleLowerCase() !== 'bearer') return null;
 
   const instance = await prisma.apiKeys.findFirst({
     where: {
@@ -42,18 +41,7 @@ export const getKey = async (req: NextApiRequest) => {
     }
   });
 
-  if (!key) return null;
-  if (!instance) {
-    const access = await prisma.shorted.findFirst({
-      where: {
-        accessToken: key
-      }
-    });
-
-    if (!access) return null;
-
-    return new AccessKeyHelper(access);
-  }
+  if (!instance) return null;
 
   return new AccessKeyHelper(instance);
 };
@@ -69,3 +57,7 @@ export const runValidator = async (res: NextApiResponse, validator: AnySchema, b
     return false;
   }
 };
+
+export const generateRandomName = () => `${camelcase(uniqueNamesGenerator({
+  dictionaries: [adjectives, colors, languages, animals],
+}), { pascalCase: true }) }-${ nanoid(8)}`;
