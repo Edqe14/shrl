@@ -1,7 +1,7 @@
 import { Shorted } from '@prisma/client';
 import axios from 'axios';
 import { FormEventHandler, useEffect, useState } from 'react';
-import { BiCopyAlt, BiLinkExternal, BiPencil, BiTrashAlt } from 'react-icons/bi';
+import { BiCopyAlt, BiLinkExternal, BiTrashAlt } from 'react-icons/bi';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 import ErrorAlert from '@/components/ErrorAlert';
