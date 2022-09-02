@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import connector from '@/lib/connector';
 import { getKey, responseUtil, runValidator } from '@/lib/helper';
 import prisma from '@/lib/database';
@@ -46,11 +47,12 @@ export default connector()
           apiKeyId: key.instance.id,
         }
       }))) throw new Error('Not found');
+      if (name && !!await prisma.shorted.count({ where: { name } })) return responseUtil(res, 400, { message: 'Duplicate name' });
 
       const all = await prisma.shorted.update({
         data: {
           url,
-          name
+          name: name ?? nanoid(8)
         },
         where: {
           id: req.query.id as string,

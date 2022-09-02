@@ -35,6 +35,7 @@ export default connector()
 
     const { name, url } = shorterValidator.cast(req.body);
     if (!url) return responseUtil(res, 422, { message: 'Invalid request' });
+    if (name && !!await prisma.shorted.count({ where: { name } })) return responseUtil(res, 400, { message: 'Duplicate name' });
 
     const short = await prisma.shorted.create({
       data: {
