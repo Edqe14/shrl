@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next';
-import { useEffect } from 'react';
 import prisma from '@/lib/database';
 
 interface Props {
@@ -8,11 +7,6 @@ interface Props {
 }
 
 export default function Name({ url }: Props) {
-  // useEffect(() => {
-  //   // eslint-disable-next-line no-restricted-globals
-  //   location.href = url;
-  // }, []);
-
   return (
     <main className="w-screen h-screen flex justify-center items-center">
       <h1>Redirecting to <span className="font-bold underline underline-offset-8 decoration-primary decoration-2">{url}</span></h1>
