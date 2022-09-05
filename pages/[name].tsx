@@ -8,10 +8,10 @@ interface Props {
 }
 
 export default function Name({ url }: Props) {
-  useEffect(() => {
-    // eslint-disable-next-line no-restricted-globals
-    location.href = url;
-  }, []);
+  // useEffect(() => {
+  //   // eslint-disable-next-line no-restricted-globals
+  //   location.href = url;
+  // }, []);
 
   return (
     <main className="w-screen h-screen flex justify-center items-center">
@@ -40,10 +40,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
+  ctx.res.setHeader('Location', instance.url);
+  ctx.res.statusCode = 301;
+
   return {
     props: {
       url: instance.url,
       name: instance.name
-    }
+    },
   };
 };
